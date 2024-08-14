@@ -6,10 +6,13 @@ from typing import Tuple, Callable
 from textgrad import Variable
 from textgrad.engine import EngineLM
 
+
+
 AVAILABLE_DATASETS = [
     "BBH_object_counting",
     "BBH_word_sorting",
     "GSM8K_DSPy",
+    "binary_classification"
 ]
 
 AVAILABLE_INSTANCE_DATASETS = [
@@ -19,28 +22,28 @@ AVAILABLE_INSTANCE_DATASETS = [
     "LeetCodeHardEval"
 ]
 
-def load_task(task_name: str, evaluation_api: EngineLM, *args, **kwargs) -> Tuple[Dataset, Dataset, Callable]:
-    """
-    Args:
-        task_name: the name of the task to evaluate
-        evaluation_api: the engine to use for evaluation, if needed
-    """
-    if "object_counting" in task_name:
+def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evaluation_api: EngineLM, *args, **kwargs) -> Tuple[Dataset, Dataset, Callable]:
+
+    if task_name = "binary_classification" :
+        
         from textgrad.loss import MultiFieldTokenParsedEvaluation
-        from .big_bench_hard import BigBenchHard, string_based_equality_fn
-        from textgrad.autograd.string_based_ops import StringBasedFunction
-        task_name = task_name[4:]
-        train_set = BigBenchHard(task_name, split="train", *args, **kwargs)
-        val_set = BigBenchHard(task_name, split="val", *args, **kwargs)
-        test_set = BigBenchHard(task_name, split="test", *args, **kwargs)
-        role_descriptions = [
-            "Question for the task",
-            "Ground truth answer",
-            "Reasoning and prediction from the language model"
-        ]
-        fn_purpose = "The runtime of string-based function that checks if the prediction is correct."
-        eval_fn = StringBasedFunction(string_based_equality_fn, function_purpose=fn_purpose)
+        from .big_bench_hard import BigBenchHard
+
+        train_data = pd.read_csv(df_train)
+        valid_data = pd.read_csv(df_valid)
+        test_data = pd.read_csv(df_test)
+
+        
+        evaluation_instruction = "Below is a prompt from text-generation task. Is the final result similar, i.e. the similar to the ground truth answer? Say only 1 (yes) or 0 (no). Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
+        eval_instruction = Variable(evaluation_instruction, requires_grad=False, role_description="evaluation instruction for the task")
+        eval_fn = MultiFieldTokenParsedEvaluation(
+            eval_instruction,
+            engine=evaluation_api,
+            role_descriptions=role_descriptions,
+            parse_tags=["<ACCURACY>", "</ACCURACY>"]
+        )
         return train_set, val_set, test_set, eval_fn
+
     
     elif "BBH" in task_name:
         from textgrad.loss import MultiFieldTokenParsedEvaluation
@@ -63,28 +66,11 @@ def load_task(task_name: str, evaluation_api: EngineLM, *args, **kwargs) -> Tupl
             role_descriptions=role_descriptions,
             parse_tags=["<ACCURACY>", "</ACCURACY>"]
         )
+        return train_set, val_set, test_set, eval_fn
+    
+            
+    elif task_name = "binary_classification" :
         
-        return train_set, val_set, test_set, eval_fn
-    
-    elif task_name == "GSM8K_DSPy":
-        from textgrad.tasks.gsm8k import GSM8K_DSPy
-        from .big_bench_hard import string_based_equality_fn
-        from textgrad.autograd.string_based_ops import StringBasedFunction
-        evaluation_instruction = "Below is a prediction we got for a question answering task, and the correct final answer. Is the final answer correct? Say only 1 (yes) or 0 (no). Return 1 if and only if the final answer is correct. Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
-        system_prompt = Variable("You are a language model that evaluates the accuracy of a prediction for a mathematical question answering task. Only call a prediction accurate if it is the same as the ground truth answer.", requires_grad=False, role_description="system prompt for the evaluation")
-        # Should we do train/test like this?
-        train_set = GSM8K_DSPy(split="train", *args, **kwargs)
-        val_set = GSM8K_DSPy(split="val", *args, **kwargs)
-        test_set = GSM8K_DSPy(split="test", *args, **kwargs)
-        role_descriptions = [
-            "Question for the task",
-            "Ground truth answer",
-            "Prediction from the language model"
-        ]
-        fn_purpose = "The runtime of string-based function that checks if the prediction is correct."
-        eval_fn = StringBasedFunction(string_based_equality_fn, function_purpose=fn_purpose)
-        return train_set, val_set, test_set, eval_fn
-    
     else:
         raise ValueError(f"Task {task_name} not found.")
 
