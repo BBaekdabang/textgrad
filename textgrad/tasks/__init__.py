@@ -22,17 +22,22 @@ AVAILABLE_INSTANCE_DATASETS = [
     "LeetCodeHardEval"
 ]
 
-def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evaluation_api: EngineLM, *args, **kwargs) -> Tuple[Dataset, Dataset, Callable]:
+def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evaluation_api: EngineLM) :
 
     if task_name == "binary_classification" :
         
         from textgrad.loss import MultiFieldTokenParsedEvaluation
         from .big_bench_hard import BigBenchHard
 
-        train_data = pd.read_csv(df_train)
-        valid_data = pd.read_csv(df_valid)
-        test_data = pd.read_csv(df_test)
-
+        train_set = pd.read_csv(df_train)
+        train_set = train_set['textgrad'].values
+        
+        valid_set = pd.read_csv(df_valid)
+        valid_set = valid_set['textgrad'].values
+        
+        test_set = pd.read_csv(df_test)
+        test_set = test_set['textgrad'].values
+        
         
         evaluation_instruction = "Below is a prompt from text-generation task. Is the final result similar, i.e. the similar to the ground truth answer? Say only 1 (yes) or 0 (no). Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
         eval_instruction = Variable(evaluation_instruction, requires_grad=False, role_description="evaluation instruction for the task")
