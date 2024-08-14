@@ -28,7 +28,8 @@ def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evalua
         
         from textgrad.loss import MultiFieldTokenParsedEvaluation
         from .big_bench_hard import BigBenchHard
-
+        import pandas as pd
+        
         train_set = pd.read_csv(df_train)
         train_set = train_set['textgrad'].values
         
