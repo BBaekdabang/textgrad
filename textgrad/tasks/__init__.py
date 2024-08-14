@@ -24,7 +24,7 @@ AVAILABLE_INSTANCE_DATASETS = [
 
 def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evaluation_api: EngineLM, *args, **kwargs) -> Tuple[Dataset, Dataset, Callable]:
 
-    if task_name = "binary_classification" :
+    if task_name == "binary_classification" :
         
         from textgrad.loss import MultiFieldTokenParsedEvaluation
         from .big_bench_hard import BigBenchHard
