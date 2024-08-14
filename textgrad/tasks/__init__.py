@@ -78,8 +78,6 @@ def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evalua
         )
         return train_set, val_set, test_set, eval_fn
     
-            
-    elif task_name = "binary_classification" :
         
     else:
         raise ValueError(f"Task {task_name} not found.")
