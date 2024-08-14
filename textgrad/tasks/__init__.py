@@ -34,7 +34,7 @@ def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evalua
         train_set = train_set['textgrad'].values
         
         val_set = pd.read_csv(df_valid)
-        val_set = valid_set['textgrad'].values
+        val_set = val_set['textgrad'].values
         
         test_set = pd.read_csv(df_test)
         test_set = test_set['textgrad'].values
