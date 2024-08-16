@@ -16,7 +16,7 @@ class CLS(Dataset):
         if split == "test":
             self.data = load_dataset("hyoje/cls_binary", subset, cache_dir=root, split="test")
         elif split == "val":
-            self.data = load_dataset("hyoje/cls_binary", subset, cache_dir=root, split="valid")
+            self.data = load_dataset("hyoje/cls_binary", subset, cache_dir=root, split="validation")
         elif split == "train":
             self.data = load_dataset("hyoje/cls_binary", subset, cache_dir=root, split="train")
         self.split = split
