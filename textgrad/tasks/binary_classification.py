@@ -52,23 +52,17 @@ class CLS_binary(CLS):
         official_test = []
         for example in tqdm.tqdm(hf_official_train):
             question = example['question']
-            answer = example['answer'].strip().split()
-            
-            answer = str(int(answer[-1].replace(',', '')))
+            answer = example['answer']
             official_train.append(dict(question=question, answer=answer))
 
         for example in tqdm.tqdm(hf_official_test):
             question = example['question']
-            answer = example['answer'].strip().split()
-            
-            answer = str(int(answer[-1].replace(',', '')))
+            answer = example['answer']
             official_test.append(dict(question=question, answer=answer))
           
         for example in tqdm.tqdm(hf_official_valid):
             question = example['question']
-            answer = example['answer'].strip().split()
-            
-            answer = str(int(answer[-1].replace(',', '')))
+            answer = example['answer']
             official_valid.append(dict(question=question, answer=answer))
           
         rng = random.Random(0)
