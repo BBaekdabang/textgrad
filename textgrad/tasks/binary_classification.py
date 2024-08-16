@@ -74,7 +74,7 @@ class CLS_binary(CLS):
         testset = official_test[:]
         if split == "train":
             self.data = trainset
-        elif split == "val":
+        elif split == "validation":
             self.data = devset
         elif split == "test":
             self.data = testset
