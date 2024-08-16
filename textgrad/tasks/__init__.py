@@ -24,20 +24,14 @@ AVAILABLE_INSTANCE_DATASETS = [
 
 def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evaluation_api: EngineLM) :
 
-    if task_name == "binary_classification" :
-        
+    if "binary_classification" in task_name:
         from textgrad.loss import MultiFieldTokenParsedEvaluation
-        from .big_bench_hard import BigBenchHard
-        import pandas as pd
+        from textgrad.tasks.binary_classification import CLS_binary
         
-        train_set = pd.read_csv(df_train)
-        train_set = train_set['textgrad'].values
-        
-        val_set = pd.read_csv(df_valid)
-        val_set = val_set['textgrad'].values
-        
-        test_set = pd.read_csv(df_test)
-        test_set = test_set['textgrad'].values
+        task_name = "hyoje/cls_binary"
+        train_set = CLS_binary(task_name, split="train", *args, **kwargs)
+        val_set = CLS_binary(task_name, split="valid", *args, **kwargs)
+        test_set = CLS_binary(task_name, split="test", *args, **kwargs)
         
         role_descriptions = [
             "Question for the task",
@@ -45,31 +39,7 @@ def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evalua
             "Reasoning and prediction from the language model"
         ]
         
-        evaluation_instruction = "Below is a prompt from text-generation task. Is the final result similar, i.e. the similar to the ground truth answer? Say only 1 (yes) or 0 (no). Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
-        eval_instruction = Variable(evaluation_instruction, requires_grad=False, role_description="evaluation instruction for the task")
-        eval_fn = MultiFieldTokenParsedEvaluation(
-            eval_instruction,
-            engine=evaluation_api,
-            role_descriptions=role_descriptions,
-            parse_tags=["<ACCURACY>", "</ACCURACY>"]
-        )
-        return train_set, val_set, test_set, eval_fn
-
-    
-    elif "BBH" in task_name:
-        from textgrad.loss import MultiFieldTokenParsedEvaluation
-        from .big_bench_hard import BigBenchHard
-        task_name = task_name[4:]
-        train_set = BigBenchHard(task_name, split="train", *args, **kwargs)
-        val_set = BigBenchHard(task_name, split="val", *args, **kwargs)
-        test_set = BigBenchHard(task_name, split="test", *args, **kwargs)
-        role_descriptions = [
-            "Question for the task",
-            "Ground truth answer",
-            "Reasoning and prediction from the language model"
-        ]
-        
-        evaluation_instruction = "Below is a question from a question-answering task, the ground truth answer, and reasoning with the final prediction. Is the final prediction correct, i.e. the same as the ground truth answer? Say only 1 (yes) or 0 (no). Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
+        evaluation_instruction = "Below is a prompt and examples from text-generation task, the ground truth answer. If the final generated note are note easily distinguishable from the example samples, say only 1 (yes) or 0 (no). Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
         eval_instruction = Variable(evaluation_instruction, requires_grad=False, role_description="evaluation instruction for the task")
         eval_fn = MultiFieldTokenParsedEvaluation(
             eval_instruction,
