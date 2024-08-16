@@ -45,7 +45,7 @@ class CLS_binary(CLS):
             
         dataset = load_dataset("hyoje/cls_binary", cache_dir=root)
         hf_official_train = dataset['train']
-        hf_official_valid = dataset['valid']
+        hf_official_valid = dataset['validation']
         hf_official_test = dataset['test']
         official_train = []
         official_valid = []
