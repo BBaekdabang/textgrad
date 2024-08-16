@@ -43,7 +43,7 @@ class CLS_binary(CLS):
         if root is None:
             root = platformdirs.user_cache_dir("textgrad")
             
-        dataset = load_dataset("hyoje/cls_binary", 'main', cache_dir=root)
+        dataset = load_dataset("hyoje/cls_binary", cache_dir=root)
         hf_official_train = dataset['train']
         hf_official_valid = dataset['valid']
         hf_official_test = dataset['test']
