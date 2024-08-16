@@ -53,7 +53,6 @@ class CLS_binary(CLS):
         for example in tqdm.tqdm(hf_official_train):
             question = example['question']
             answer = example['answer'].strip().split()
-            assert answer[-2] == '####'
             
             answer = str(int(answer[-1].replace(',', '')))
             official_train.append(dict(question=question, answer=answer))
@@ -61,7 +60,6 @@ class CLS_binary(CLS):
         for example in tqdm.tqdm(hf_official_test):
             question = example['question']
             answer = example['answer'].strip().split()
-            assert answer[-2] == '####'
             
             answer = str(int(answer[-1].replace(',', '')))
             official_test.append(dict(question=question, answer=answer))
@@ -69,7 +67,6 @@ class CLS_binary(CLS):
         for example in tqdm.tqdm(hf_official_valid):
             question = example['question']
             answer = example['answer'].strip().split()
-            assert answer[-2] == '####'
             
             answer = str(int(answer[-1].replace(',', '')))
             official_valid.append(dict(question=question, answer=answer))
