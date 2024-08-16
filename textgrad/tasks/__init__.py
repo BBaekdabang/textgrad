@@ -22,7 +22,7 @@ AVAILABLE_INSTANCE_DATASETS = [
     "LeetCodeHardEval"
 ]
 
-def load_task(df_train: str, df_valid: str, df_test: str, task_name: str, evaluation_api: EngineLM) :
+def load_task(task_name: str, evaluation_api: EngineLM, *args, **kwargs) :
 
     if "binary_classification" in task_name:
         from textgrad.loss import MultiFieldTokenParsedEvaluation
