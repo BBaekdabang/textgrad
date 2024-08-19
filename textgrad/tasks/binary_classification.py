@@ -44,9 +44,9 @@ class CLS_binary(CLS):
             root = platformdirs.user_cache_dir("textgrad")
             
         dataset = load_dataset("hyoje/cls_binary", cache_dir=root)
-        hf_official_train = dataset['train'][:100]
-        hf_official_valid = dataset['validation'][:50]
-        hf_official_test = dataset['test'][:50]
+        hf_official_train = dataset['train']
+        hf_official_valid = dataset['validation']
+        hf_official_test = dataset['test']
         official_train = []
         official_valid = []
         official_test = []
