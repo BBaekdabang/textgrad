@@ -32,7 +32,7 @@ class CLS(Dataset):
         return len(self.data)
 
     def get_task_description(self):
-        return "You will generate the discharge note referring to the progress notes. Think step by step. The last line of your response should be of the following format: 'Answer: $VALUE' where VALUE is a numerical value."
+        return "You will generate the progress notes and discharge note referring to the several examples. Think step by step. The last line of your response should be of the following format: 'Answer: $VALUE' where VALUE is a numerical value."
 
 
 class CLS_binary(CLS):
