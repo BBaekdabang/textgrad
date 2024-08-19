@@ -68,6 +68,8 @@ class CLS_binary(CLS):
         rng = random.Random(0)
         rng.shuffle(official_train)
         rng = random.Random(0)
+        rng.shuffle(official_valid)
+        rng = random.Random(0)
         rng.shuffle(official_test)
         trainset = official_train[:]
         devset = official_valid[:]
