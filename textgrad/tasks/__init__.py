@@ -22,7 +22,7 @@ AVAILABLE_INSTANCE_DATASETS = [
     "LeetCodeHardEval"
 ]
 
-def load_task(task_name: str,  *args, **kwargs) :
+def load_task(task_name: str, evaluation_api: EngineLM,  *args, **kwargs) :
 
     if "binary_classification" in task_name:
         from textgrad.loss import MultiFieldTokenParsedEvaluation
@@ -41,9 +41,17 @@ def load_task(task_name: str,  *args, **kwargs) :
             "Ground truth answer",
             "Reasoning and prediction from the language model"
         ]
+
+        evaluation_instruction = "Below is a prompt and examples from text-generation task, the ground truth answer. If the final generated note are note easily distinguishable from the example samples, say only 1 (yes) or 0 (no). Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
+        eval_instruction = Variable(evaluation_instruction, requires_grad=False, role_description="evaluation instruction for the task")
+        eval_fn = MultiFieldTokenParsedEvaluation(
+            eval_instruction,
+            engine=evaluation_api,
+            role_descriptions=role_descriptions,
+            parse_tags=["<ACCURACY>", "</ACCURACY>"]
+        )
         
-        
-        return train_set, val_set, test_set
+        return train_set, val_set, test_set, eval_fn
     
         
     else:
