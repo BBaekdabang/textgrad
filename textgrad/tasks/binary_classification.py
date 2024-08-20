@@ -3,7 +3,7 @@ import platformdirs
 from .base import Dataset
 
 class CLS(Dataset):
-    def __init__(self, subset:str, root: str=None, split: str="train", *args, **kwargs):
+    def __init__(self, subset:str, root: str=None, split: str, *args, **kwargs):
         """
         GSM8K dataset from HF."""
         from datasets import load_dataset
@@ -36,7 +36,7 @@ class CLS(Dataset):
 
 
 class CLS_binary(CLS):
-    def __init__(self, root:str=None, split: str="train"):
+    def __init__(self, root:str=None, split: str):
         import tqdm
         import random
         from datasets import load_dataset
@@ -44,40 +44,39 @@ class CLS_binary(CLS):
             root = platformdirs.user_cache_dir("textgrad")
             
         dataset = load_dataset("hyoje/cls_binary", cache_dir=root)
-        hf_official_train = dataset['train']
-        hf_official_valid = dataset['validation']
-        hf_official_test = dataset['test']
-        official_train = []
-        official_valid = []
-        official_test = []
-        print("******************")
-        for example in tqdm.tqdm(hf_official_train):
-            question = example['question']
-            answer = example['answer']
-            official_train.append(dict(question=question, answer=answer))
-        print("//////////////////////////////")
-        for example in tqdm.tqdm(hf_official_test):
-            question = example['question']
-            answer = example['answer']
-            official_test.append(dict(question=question, answer=answer))
-        print("/////**************//") 
-        for example in tqdm.tqdm(hf_official_valid):
-            question = example['question']
-            answer = example['answer']
-            official_valid.append(dict(question=question, answer=answer))
-          
-        rng = random.Random(0)
-        rng.shuffle(official_train)
-        rng = random.Random(0)
-        rng.shuffle(official_valid)
-        rng = random.Random(0)
-        rng.shuffle(official_test)
-        trainset = official_train[:]
-        devset = official_valid[:]
-        testset = official_test[:]
-        if split == "train":
+
+
+        if split == "train" :
+            hf_official_train = dataset['train']
+            official_train = []
+            for example in tqdm.tqdm(hf_official_train):
+                question = example['question']
+                answer = example['answer']
+                official_train.append(dict(question=question, answer=answer))
+            rng = random.Random(0)
+            rng.shuffle(official_train)
+            trainset = official_train[:]
             self.data = trainset
-        elif split == "validation":
+
+        elif split == "validation" : 
+            hf_official_valid = dataset['validation']
+            official_valid = []
+            for example in tqdm.tqdm(hf_official_valid):
+                question = example['question']
+                answer = example['answer']
+                official_valid.append(dict(question=question, answer=answer))
+            rng = random.Random(0)
+            rng.shuffle(official_valid)
+            devset = official_valid[:]
             self.data = devset
-        elif split == "test":
+
+        elif split == "test" :
+            hf_official_test = dataset['test']
+            official_test = []
+            for example in tqdm.tqdm(hf_official_test):
+                question = example['question']
+                answer = example['answer']
+                official_test.append(dict(question=question, answer=answer))
+            rng = random.Random(0)
+            rng.shuffle(official_test)
             self.data = testset
