@@ -3,7 +3,7 @@ import platformdirs
 from .base import Dataset
 
 class CLS(Dataset):
-    def __init__(self, subset:str, root: str=None, split: str, *args, **kwargs):
+    def __init__(self, subset:str, root: str=None, split: str=None, *args, **kwargs):
         """
         GSM8K dataset from HF."""
         from datasets import load_dataset
@@ -36,7 +36,7 @@ class CLS(Dataset):
 
 
 class CLS_binary(CLS):
-    def __init__(self, root:str=None, split: str):
+    def __init__(self, root:str=None, split: str=None):
         import tqdm
         import random
         from datasets import load_dataset
