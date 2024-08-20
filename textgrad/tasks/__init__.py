@@ -30,11 +30,11 @@ def load_task(task_name: str, evaluation_api: EngineLM,  *args, **kwargs) :
         
         task_name = "hyoje/cls_binary"
         print('task')
-        train_set = CLS_binary(task_name, split="train", *args, **kwargs)
+        train_set = CLS_binary(task_name, split="train")
         print('train_cls_finish')
-        val_set = CLS_binary(task_name, split="valid", *args, **kwargs)
+        val_set = CLS_binary(task_name, split="valid")
         print('valid_cls_finish')
-        test_set = CLS_binary(task_name, split="test", *args, **kwargs)
+        test_set = CLS_binary(task_name, split="test")
         
         role_descriptions = [
             "Question for the task",
