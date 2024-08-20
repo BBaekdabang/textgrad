@@ -32,7 +32,7 @@ def load_task(task_name: str, evaluation_api: EngineLM,  *args, **kwargs) :
         print('task')
         train_set = CLS_binary(task_name, split="train")
         print('train_cls_finish')
-        val_set = CLS_binary(task_name, split="valid")
+        val_set = CLS_binary(task_name, split="validation")
         print('valid_cls_finish')
         test_set = CLS_binary(task_name, split="test")
         
