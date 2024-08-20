@@ -29,8 +29,11 @@ def load_task(task_name: str, evaluation_api: EngineLM, *args, **kwargs) :
         from textgrad.tasks.binary_classification import CLS_binary
         
         task_name = "hyoje/cls_binary"
+        print('task')
         train_set = CLS_binary(task_name, split="train", *args, **kwargs)
+        print('train_cls_finish')
         val_set = CLS_binary(task_name, split="valid", *args, **kwargs)
+        print('valid_cls_finish')
         test_set = CLS_binary(task_name, split="test", *args, **kwargs)
         
         role_descriptions = [
