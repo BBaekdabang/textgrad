@@ -79,4 +79,5 @@ class CLS_binary(CLS):
                 official_test.append(dict(question=question, answer=answer))
             rng = random.Random(0)
             rng.shuffle(official_test)
+            testset = official_test[:]
             self.data = testset
