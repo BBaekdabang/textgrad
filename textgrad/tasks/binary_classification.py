@@ -50,16 +50,17 @@ class CLS_binary(CLS):
         official_train = []
         official_valid = []
         official_test = []
+        print("******************")
         for example in tqdm.tqdm(hf_official_train):
             question = example['question']
             answer = example['answer']
             official_train.append(dict(question=question, answer=answer))
-
+        print("//////////////////////////////")
         for example in tqdm.tqdm(hf_official_test):
             question = example['question']
             answer = example['answer']
             official_test.append(dict(question=question, answer=answer))
-          
+        print("/////**************//") 
         for example in tqdm.tqdm(hf_official_valid):
             question = example['question']
             answer = example['answer']
