@@ -28,7 +28,7 @@ def load_task(task_name: str, evaluation_api: EngineLM,  *args, **kwargs) :
         from textgrad.loss import MultiFieldTokenParsedEvaluation
         from textgrad.tasks.binary_classification import CLS_binary
         
-        task_name = "hyoje/cls_binary"
+        task_name = "binary_classification"
         print('task')
         train_set = CLS_binary(task_name, split="train")
         print('train_cls_finish')
