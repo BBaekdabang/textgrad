@@ -41,7 +41,7 @@ def load_task(task_name: str, evaluation_api: EngineLM,  *args, **kwargs) :
             "Reasoning and prediction from the language model"
         ]
 
-        evaluation_instruction = "Below is a prompt and examples from text-generation task, the ground truth answer. If the final generated note are not easily distinguishable from the example samples, say only 1 (yes) or 0 (no). Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
+        evaluation_instruction = "Below is a prompt and examples from text-generation task, the ground truth answer. If the final generated note are not distinguishable from the example samples, say only 1 (yes) or 0 (no). Return your response within <ACCURACY> </ACCURACY> tags. e.g.<ACCURACY> 0 </ACCURACY> or <ACCURACY> 1 </ACCURACY>"
         eval_instruction = Variable(evaluation_instruction, requires_grad=False, role_description="evaluation instruction for the task")
         eval_fn = MultiFieldTokenParsedEvaluation(
             eval_instruction,
